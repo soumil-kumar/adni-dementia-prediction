@@ -1,9 +1,10 @@
 # BTP LaTeX thesis report
 
-`BTP_Report.tex` is a self-contained editable report with four figure files in
+`BTP_Report.tex` is a self-contained editable report with five figure files in
 `figures/`. It compiles to 23 A4 pages, including front matter, references, and
-the complete 67-candidate feature appendix. No author, institution, or supervisor
-identity has been invented; add institutional details if required for submission.
+the complete 67-candidate feature appendix. The title page identifies BTP as Bachelor's Thesis Project, IIT Kharagpur,
+students Soumil Kumar (23BT10034) and Ritam Kundu (23BT10031), and guidance by
+Manjunath Mahadevappa, using the details supplied by the project authors.
 
 From this directory, compile twice:
 

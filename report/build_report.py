@@ -26,20 +26,26 @@ parts=[r'''\documentclass[11pt,a4paper]{article}
 \setlength{\emergencystretch}{3em}
 \newcommand{\field}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\fig}[3]{\begin{figure}[!ht]\centering\includegraphics[width=#2\linewidth]{figures/#1}\caption{#3}\end{figure}}
+\makeatletter
+\renewcommand*\l@section[2]{\addvspace{10pt}\@dottedtocline{1}{0pt}{2.2em}{\bfseries #1}{\bfseries #2}}
+\renewcommand*\@pnumwidth{2em}
+\renewcommand*\@tocrmarg{3em}
+\makeatother
 \begin{document}
 \begin{titlepage}\centering
-\vspace*{22mm}
-{\Large Bachelor of Technology Project\par}\vspace{14mm}
-{\Huge\bfseries Predictive Modeling of\par Neurocognitive Disease\par Progression\par}\vspace{10mm}
-{\LARGE Five-year dementia prediction from\par baseline ADNI tabular biomarkers\par}\vspace{18mm}
-{\large Technical thesis report\par 2 November 2026\par}\vfill
-\begin{minipage}{.88\textwidth}
-\textbf{Implemented endpoint:} any incident dementia within five calendar years, among participants without dementia at their original baseline. Alzheimer-attributed dementia is a narrower endpoint and is not separately established by this classifier.
-
-\textbf{Evidence base:} frozen model, immutable input snapshots, recorded development comparisons, untouched validation, and independent fresh-process reproduction.
-
-\textbf{Repository:} \url{https://github.com/soumil-kumar/adni-dementia-prediction}
-\end{minipage}\vspace{12mm}
+\vspace*{5mm}
+{\Large\bfseries Indian Institute of Technology Kharagpur\par}\vspace{9mm}
+\includegraphics[height=43mm]{figures/iit_kharagpur.png}\par\vspace{10mm}
+{\Large Bachelor's Thesis Project (BTP)\par}\vspace{10mm}
+{\huge\bfseries Predictive Modeling of\par Neurocognitive Disease\par Progression\par}\vspace{8mm}
+{\large Five-year dementia prediction from\par baseline ADNI tabular biomarkers\par}\vfill
+{\large\bfseries Submitted by\par}\vspace{4mm}
+\begin{tabular}{ll}
+\large 23BT10034 & \large Soumil Kumar\\[3mm]
+\large 23BT10031 & \large Ritam Kundu
+\end{tabular}\par\vspace{13mm}
+{\large Under the guidance of\par}\vspace{3mm}
+{\Large\bfseries Manjunath Mahadevappa\par}\vspace{10mm}
 \end{titlepage}
 ''']
 def page(body):parts.append(body+'\n\\clearpage\n')
@@ -54,10 +60,20 @@ The frozen model achieved validation accuracy 89.62\%, precision 83.08\%, recall
 
 Thirteen synthetic tests and repository CI passed. Independent reproduction recovered identical prepared data and subject partitions and reproduced probabilities within $10^{-12}$. Important limitations are right-censoring selection, limited external validity, uncertain acquisition timing for some merged baseline fields, and no converters in the validation CN/SMC subgroup. These results demonstrate a reproducible research workflow; they do not establish a clinically deployable probability for the general population.
 
-\textbf{Keywords:} ADNI; dementia prognosis; baseline biomarkers; temporal leakage; missing data; logistic regression; calibration; subject-level validation.
 ''')
-page(r'''\setcounter{tocdepth}{1}\tableofcontents
-\vfill\textbf{Reading guide.} Chapters 1--5 define the implemented task and methods. Chapter 6 separates development comparisons from final validation. Chapter 7 identifies limitations and unimplemented extensions. The appendix specifies all 67 audited candidates and the reproducibility contract. All page counts include this front matter, appendices, and references.
+page(r'''\setcounter{tocdepth}{1}
+\section*{Contents}
+\vspace{3mm}
+\noindent\textbf{CHAPTER / SECTION}\hfill\textbf{PAGE}\par
+\vspace{1mm}\hrule\vspace{3mm}
+\begingroup\hypersetup{linkcolor=black}
+\makeatletter\@starttoc{toc}\makeatother
+\endgroup
+\vspace{7mm}\hrule
+\vfill\textbf{Reading guide}\par
+Chapters 1--5 define the implemented task and methods. Chapter 6 presents development comparisons and final validation. Chapter 7 discusses limitations and future scope. The appendices provide the feature specification and reproducibility details.
+
+Page numbers include the title page, abstract, references, and appendices.
 ''')
 abbr=[('AD / NCD','Alzheimer\textquotesingle s disease / neurocognitive disease'),('CN / SMC','Cognitively normal / significant memory concern'),('MCI; EMCI / LMCI','Mild cognitive impairment; early / late MCI'),('RID / VISCODE','Participant roster identifier / visit code'),('\field{bl}; \field{_bl}','Original baseline visit; baseline-version field suffix'),('APOE4','Number of apolipoprotein E $\\varepsilon4$ alleles (0--2)'),('CDRSB','Clinical Dementia Rating sum of boxes'),('ADAS11 / ADAS13','11-/13-item Alzheimer\textquotesingle s Disease Assessment Scale'),('MMSE / MoCA','Mini-Mental State Examination / Montreal Cognitive Assessment'),('RAVLT','Rey Auditory Verbal Learning Test'),('FAQ / ECog','Functional Activities Questionnaire / Everyday Cognition'),('CSF / ICV','Cerebrospinal fluid / intracranial volume'),('FDG / AV45','Fluorodeoxyglucose PET / florbetapir amyloid PET'),('ABETA / TAU / PTAU','Amyloid-$\\beta$ / total tau / phosphorylated tau'),('\field{pT217_F}','Fujirebio plasma phosphorylated tau-217'),('\field{NfL_Q} / \field{GFAP_Q}','Quanterix neurofilament light / glial fibrillary acidic protein'),('ROC / AP / ECE','Receiver operating characteristic / average precision / expected calibration error'),('TP / FP / TN / FN','True positive / false positive / true negative / false negative')]
 page(r'\section*{Nomenclature and abbreviations}\addcontentsline{toc}{section}{Nomenclature and abbreviations}'+table(['Term','Meaning'],abbr,'p{.26\\linewidth}p{.65\\linewidth}')+r'''\textbf{Notation.} $i$ identifies a subject, $t_i$ the index date, $h_i=t_i+5$ calendar years, $x_i$ baseline predictors, $y_i$ observed five-year conversion status, $q_i$ raw risk, $p_i$ calibrated risk, and $\tau$ the fixed decision threshold. ``Validation'' denotes the final held-out partition unless explicitly described as a development fold. ``PR AUC'' is reported as AP, not a trapezoidal integral.
@@ -268,6 +284,10 @@ page(r'''\section{Hyperparameters, software, and reproducibility}
 \subsection{Actual search spaces and selected configuration}
 '''+table(['Estimator','Recorded search dimensions'],[('Logistic regression',r'$C\in\{.01,.05,.1,.5,1,5,10\}$; weights none/balanced'),('Random forest','160 trees; depth 3/5/8/unlimited; leaf 2/5/10; max features sqrt/.7; weights none/balanced'),('XGBoost','120/240 trees; depth 2/3/4; learning rate .03/.07; subsampling .8/1; column sampling .8/1; lambda 1/10; child weight 3/8; positive weight 1/2'),('CatBoost','150/300 iterations; depth 3/4/5; learning rate .03/.07; leaf L2 3/10; class weights none/balanced')],'p{.23\\linewidth}p{.68\\linewidth}')+r'''The selected estimator uses $C=.01$, balanced weights, maximum 3,000 logistic iterations, seed 42, core panel, unnormalized MRI values, distance-weighted KNN with $k=5$, and a separate sigmoid calibrator with $C=10^6$. The threshold is 0.5130783821. Additional candidates normalize MRI by ICV; this transformation was not selected.
 '''+table(['Component','Recorded version'],[('Python','3.12.10')]+[(esc(k),v) for k,v in read(repo/'results/run_summary.json')['versions'].items()]+[('matplotlib / pytest','3.10.3 / 8.3.5'),('lifelines / SHAP / fpdf2','Not used')],'p{.50\\linewidth}l')+r'''\subsection{Reproduction and integrity}
+\textbf{Code repository and aggregate results:}\par
+\url{https://github.com/soumil-kumar/adni-dementia-prediction}
+
+
 The package provides \field{prepare}, \field{train}, \field{evaluate}, \field{predict}, and \field{reproduce} commands. Use Python 3.12 and \field{uv sync --locked}. Original data are external inputs; no patient data or model binaries are published. Local manifests contain input, matrix, model, and split hashes. The final validation marker blocks retraining in the same experiment directory; repeated evaluation returns the saved result.
 
 Thirteen synthetic tests and GitHub CI passed. Fresh-process reproduction regenerated all 2,155 baseline rows, identical subject splits and threshold, and probabilities within $10^{-12}$. Public aggregate results identify the data snapshot without distributing subject records. LaTeX source, plots, and this report are additional documentation; they do not modify the fitted artifact.
