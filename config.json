@@ -1,0 +1,13 @@
+{
+  "data_dir": "../data",
+  "local_dir": "local",
+  "seed": 42,
+  "development_fraction": 0.6,
+  "calibration_fraction": 0.2,
+  "validation_fraction": 0.2,
+  "folds": 5,
+  "search_iterations": 8,
+  "search_cap": 30,
+  "screening_lookback_days": 90,
+  "bootstrap_iterations": 2000
+}

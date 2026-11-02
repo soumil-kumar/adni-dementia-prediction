@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools==75.8.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adni-dementia-prediction"
+version = "0.1.0"
+description = "Baseline five-year dementia prediction with subject-isolated evaluation"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "numpy==2.2.6", "pandas==2.2.3", "scikit-learn==1.6.1",
+  "scipy==1.15.3", "xgboost==3.0.2", "catboost==1.2.8",
+  "matplotlib==3.10.3", "joblib==1.5.1", "pytest==8.3.5"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
