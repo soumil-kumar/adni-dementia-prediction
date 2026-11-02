@@ -1,5 +1,8 @@
 # ADNI five-year dementia prediction
 
+The implementation-centred [B.Tech. thesis source](thesis/BTP_Thesis.tex) and
+[compilation instructions](thesis/README.md) document the complete study in 21 pages.
+
 Research pipeline predicting any dementia within five calendar years from a
 non-demented participant's original baseline tabular measurements.
 

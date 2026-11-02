@@ -21,3 +21,9 @@ report/*.out
 report/*.toc
 report/contact_*.png
 report/page*.png
+thesis/*.aux
+thesis/*.log
+thesis/*.out
+thesis/*.toc
+thesis/contact_*.png
+thesis/page*.png
