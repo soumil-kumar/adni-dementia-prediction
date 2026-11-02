@@ -1,0 +1,14 @@
+{
+  "baseline_diagnosis": "LMCI",
+  "AGE": 72,
+  "PTGENDER": "Female",
+  "PTEDUCAT": 16,
+  "APOE4": 1,
+  "MMSE_bl": 27,
+  "CDRSB_bl": 1.5,
+  "ADAS13_bl": 16,
+  "FAQ_bl": 2,
+  "ABETA_bl": null,
+  "TAU_bl": null,
+  "PTAU_bl": null
+}

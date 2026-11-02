@@ -69,7 +69,7 @@ def neuro_at_baseline(neuro, baseline, lookback=90):
 
 def prepare(cfg):
     source, local = Path(cfg['data_dir']), Path(cfg['local_dir'])
-    if (local / 'validation_results.json').exists():
+    if (local / 'validation_results.json').exists() or (local / 'validation_opened.json').exists():
         raise RuntimeError('Validation has already been opened. Use a new local_dir for a new experiment.')
     local.mkdir(parents=True, exist_ok=True)
     paths = {
