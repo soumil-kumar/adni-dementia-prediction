@@ -5,7 +5,7 @@ root=Path(__file__).resolve().parent; repo=root.parent
 read=lambda name:json.loads((repo/name).read_text())
 results=read('results/validation_results.json'); records=read('results/development_comparison.json')['records']
 audit=read('results/data_audit.json'); versions=read('results/run_summary.json')['versions']
-for name in ['validation_plots.png','missingness.png','calibration.png','coefficients.png']:
+for name in ['validation_plots.png','missingness.png','coefficients.png']:
     shutil.copyfile(repo/'report/figures'/name,root/'figures'/name)
 def table(head,rows,spec=None):
     return ('\\begin{center}\\small\\renewcommand{\\arraystretch}{1.15}\n\\begin{tabular}{'+(spec or 'l'+'r'*(len(head)-1))+'}\\toprule\n'+
