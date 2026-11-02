@@ -1,0 +1,93 @@
+{
+  "before": {
+    "brier": 0.07714180682470248,
+    "ece": 0.09182605870551781
+  },
+  "after": {
+    "brier": 0.06690640650033651,
+    "ece": 0.029396749701945866
+  },
+  "f2": 0.8307692307692308,
+  "f05": 0.8307692307692308,
+  "f0.5_ci": [
+    0.7605018148552541,
+    0.9034267912772586
+  ],
+  "f2_ci": [
+    0.7436549653172394,
+    0.9049079754601227
+  ],
+  "top_coefficients": [
+    {
+      "term": "numeric__values__FAQ_bl",
+      "coefficient": 0.30609352537590917
+    },
+    {
+      "term": "numeric__values__FDG_bl",
+      "coefficient": -0.30194417728307005
+    },
+    {
+      "term": "numeric__values__CDRSB_bl",
+      "coefficient": 0.30003574565811586
+    },
+    {
+      "term": "numeric__values__Hippocampus_bl",
+      "coefficient": -0.2335143286355318
+    },
+    {
+      "term": "numeric__values__ADAS13_bl",
+      "coefficient": 0.2239538697489927
+    },
+    {
+      "term": "numeric__values__RAVLT_immediate_bl",
+      "coefficient": -0.2152399058910923
+    },
+    {
+      "term": "numeric__values__MidTemp_bl",
+      "coefficient": -0.1847930478158488
+    },
+    {
+      "term": "numeric__values__Entorhinal_bl",
+      "coefficient": -0.1813872178020671
+    },
+    {
+      "term": "numeric__values__APOE4",
+      "coefficient": 0.1791528535626681
+    },
+    {
+      "term": "numeric__values__ADAS11_bl",
+      "coefficient": 0.17045076087818428
+    },
+    {
+      "term": "numeric__values__MMSE_bl",
+      "coefficient": -0.15063675148206765
+    },
+    {
+      "term": "numeric__values__PTAU_bl",
+      "coefficient": 0.1407699765833259
+    }
+  ],
+  "errors": {
+    "false_positive": {
+      "n": 11,
+      "baseline_diagnoses": {
+        "LMCI": 8,
+        "EMCI": 2,
+        "CN": 1
+      },
+      "median_age": 73.5,
+      "median_MMSE": 27.0,
+      "median_CDRSB": 1.5
+    },
+    "false_negative": {
+      "n": 11,
+      "baseline_diagnoses": {
+        "LMCI": 8,
+        "EMCI": 3
+      },
+      "median_age": 69.7,
+      "median_MMSE": 28.0,
+      "median_CDRSB": 1.5
+    }
+  }
+}

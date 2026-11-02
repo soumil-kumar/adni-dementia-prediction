@@ -15,3 +15,9 @@ data/
 *.docx
 .env*
 !examples/*.json
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/contact_*.png
+report/page*.png
