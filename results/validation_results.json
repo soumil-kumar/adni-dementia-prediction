@@ -1,0 +1,288 @@
+{
+  "model_sha256": "06485f2379bd467ded35cc1a9d0df20bda6e5319ead586364f6a16d41e2edffd",
+  "threshold": 0.513078382121767,
+  "selected": {
+    "model": "logistic",
+    "panel": "core",
+    "params": {
+      "class_weight": "balanced",
+      "C": 0.01
+    },
+    "imputation": "knn"
+  },
+  "primary": {
+    "accuracy": 0.8962264150943396,
+    "precision": 0.8307692307692308,
+    "recall": 0.8307692307692308,
+    "f1": 0.8307692307692308,
+    "specificity": 0.9251700680272109,
+    "balanced_accuracy": 0.8779696493982209,
+    "confusion_matrix": [
+      [
+        136,
+        11
+      ],
+      [
+        11,
+        54
+      ]
+    ],
+    "brier": 0.06690640650033651,
+    "n": 212,
+    "positives": 65,
+    "roc_auc": 0.9667189952904238,
+    "average_precision": 0.9249540171289932
+  },
+  "confidence_intervals_95": {
+    "accuracy": [
+      0.8537735849056604,
+      0.9386792452830188
+    ],
+    "precision": [
+      0.75,
+      0.9166666666666666
+    ],
+    "recall": [
+      0.7384615384615385,
+      0.9076923076923077
+    ],
+    "f1": [
+      0.7603145621116023,
+      0.896
+    ],
+    "specificity": [
+      0.8775510204081632,
+      0.9659863945578231
+    ],
+    "balanced_accuracy": [
+      0.8250130821559394,
+      0.9266575091575091
+    ],
+    "roc_auc": [
+      0.9447357404500262,
+      0.9847226582940868
+    ],
+    "average_precision": [
+      0.8724751833585612,
+      0.9676379846850103
+    ],
+    "brier": [
+      0.04646712975022625,
+      0.08951643459681397
+    ]
+  },
+  "at_threshold_0_5": {
+    "accuracy": 0.8962264150943396,
+    "precision": 0.8307692307692308,
+    "recall": 0.8307692307692308,
+    "f1": 0.8307692307692308,
+    "specificity": 0.9251700680272109,
+    "balanced_accuracy": 0.8779696493982209,
+    "confusion_matrix": [
+      [
+        136,
+        11
+      ],
+      [
+        11,
+        54
+      ]
+    ],
+    "brier": 0.06690640650033651,
+    "n": 212,
+    "positives": 65,
+    "roc_auc": 0.9667189952904238,
+    "average_precision": 0.9249540171289932
+  },
+  "majority_baseline": {
+    "accuracy": 0.6933962264150944,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "specificity": 1.0,
+    "balanced_accuracy": 0.5,
+    "confusion_matrix": [
+      [
+        147,
+        0
+      ],
+      [
+        65,
+        0
+      ]
+    ],
+    "brier": 0.30660377358490565,
+    "n": 212,
+    "positives": 65,
+    "roc_auc": 0.5,
+    "average_precision": 0.30660377358490565
+  },
+  "subgroups": {
+    "baseline_group:MCI": {
+      "accuracy": 0.832,
+      "precision": 0.84375,
+      "recall": 0.8307692307692308,
+      "f1": 0.8372093023255814,
+      "specificity": 0.8333333333333334,
+      "balanced_accuracy": 0.8320512820512821,
+      "confusion_matrix": [
+        [
+          50,
+          10
+        ],
+        [
+          11,
+          54
+        ]
+      ],
+      "brier": 0.10812774305673409,
+      "n": 125,
+      "positives": 65,
+      "roc_auc": 0.9276923076923077,
+      "average_precision": 0.9298641487222992
+    },
+    "baseline_group:CN/SMC": {
+      "accuracy": 0.9885057471264368,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "specificity": 0.9885057471264368,
+      "balanced_accuracy": 0.9885057471264368,
+      "confusion_matrix": [
+        [
+          86,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "brier": 0.007680348229650342,
+      "n": 87,
+      "positives": 0,
+      "roc_auc": null,
+      "average_precision": null
+    },
+    "phase:ADNI2": {
+      "accuracy": 0.9078947368421053,
+      "precision": 0.9090909090909091,
+      "recall": 0.8,
+      "f1": 0.851063829787234,
+      "specificity": 0.9607843137254902,
+      "balanced_accuracy": 0.8803921568627451,
+      "confusion_matrix": [
+        [
+          49,
+          2
+        ],
+        [
+          5,
+          20
+        ]
+      ],
+      "brier": 0.06713591747927422,
+      "n": 76,
+      "positives": 25,
+      "roc_auc": 0.9725490196078431,
+      "average_precision": 0.953892631860374
+    },
+    "phase:ADNI1": {
+      "accuracy": 0.8734177215189873,
+      "precision": 0.8888888888888888,
+      "recall": 0.8421052631578947,
+      "f1": 0.8648648648648649,
+      "specificity": 0.9024390243902439,
+      "balanced_accuracy": 0.8722721437740693,
+      "confusion_matrix": [
+        [
+          37,
+          4
+        ],
+        [
+          6,
+          32
+        ]
+      ],
+      "brier": 0.0854915488331211,
+      "n": 79,
+      "positives": 38,
+      "roc_auc": 0.9512195121951219,
+      "average_precision": 0.9337820185854411
+    },
+    "phase:ADNI3": {
+      "accuracy": 0.9024390243902439,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "specificity": 0.9024390243902439,
+      "balanced_accuracy": 0.9024390243902439,
+      "confusion_matrix": [
+        [
+          37,
+          4
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "brier": 0.04550558352592386,
+      "n": 41,
+      "positives": 0,
+      "roc_auc": null,
+      "average_precision": null
+    },
+    "phase:ADNIGO": {
+      "accuracy": 0.9375,
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1": 0.8,
+      "specificity": 0.9285714285714286,
+      "balanced_accuracy": 0.9642857142857143,
+      "confusion_matrix": [
+        [
+          13,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "brier": 0.028891697954190908,
+      "n": 16,
+      "positives": 2,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    }
+  },
+  "split_counts": {
+    "development": {
+      "n": 633,
+      "positives": 194,
+      "negatives": 439
+    },
+    "calibration": {
+      "n": 211,
+      "positives": 65,
+      "negatives": 146
+    },
+    "validation": {
+      "n": 212,
+      "positives": 65,
+      "negatives": 147
+    }
+  },
+  "bootstrap": {
+    "iterations": 2000,
+    "seed": 42,
+    "method": "stratified subject bootstrap, fixed model and threshold; conditional on held-out class counts"
+  },
+  "caveats": [
+    "Any dementia in ADNI, not specifically Alzheimer-attributed dementia.",
+    "Small held-out sample; subgroup metrics can be unstable.",
+    "Selection and incomplete-follow-up exclusions limit generalizability.",
+    "Probabilities are research estimates, not a validated clinical service."
+  ]
+}

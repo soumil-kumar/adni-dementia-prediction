@@ -1,0 +1,158 @@
+{
+  "selected": {
+    "spec": {
+      "model": "logistic",
+      "panel": "core",
+      "params": {
+        "class_weight": "balanced",
+        "C": 0.01
+      },
+      "imputation": "knn"
+    },
+    "mean": {
+      "accuracy": 0.9179227596550431,
+      "precision": 0.8411261290533204,
+      "recall": 0.9074224021592443,
+      "f1": 0.8721327706472419,
+      "roc_auc": 0.967530128169874,
+      "average_precision": 0.9396326080791708,
+      "balanced_accuracy": 0.9150225908392878
+    },
+    "std": {
+      "accuracy": 0.030628236981863757,
+      "precision": 0.06014526647185979,
+      "recall": 0.04258609837487592,
+      "f1": 0.04424647303835382,
+      "roc_auc": 0.026206137328622897,
+      "average_precision": 0.04432430309604442,
+      "balanced_accuracy": 0.03107474330949453
+    },
+    "folds": [
+      {
+        "accuracy": 0.8976377952755905,
+        "precision": 0.825,
+        "recall": 0.8461538461538461,
+        "f1": 0.8354430379746836,
+        "specificity": 0.9204545454545454,
+        "balanced_accuracy": 0.8833041958041958,
+        "confusion_matrix": [
+          [
+            81,
+            7
+          ],
+          [
+            6,
+            33
+          ]
+        ],
+        "brier": 0.0789371550573483,
+        "n": 127,
+        "positives": 39,
+        "roc_auc": 0.9606643356643356,
+        "average_precision": 0.9214251749292296,
+        "threshold": 0.5148937583757427
+      },
+      {
+        "accuracy": 0.937007874015748,
+        "precision": 0.8604651162790697,
+        "recall": 0.9487179487179487,
+        "f1": 0.9024390243902439,
+        "specificity": 0.9318181818181818,
+        "balanced_accuracy": 0.9402680652680653,
+        "confusion_matrix": [
+          [
+            82,
+            6
+          ],
+          [
+            2,
+            37
+          ]
+        ],
+        "brier": 0.05816243866845106,
+        "n": 127,
+        "positives": 39,
+        "roc_auc": 0.9877622377622378,
+        "average_precision": 0.9751463316033743,
+        "threshold": 0.5476115513093508
+      },
+      {
+        "accuracy": 0.8740157480314961,
+        "precision": 0.7446808510638298,
+        "recall": 0.8974358974358975,
+        "f1": 0.813953488372093,
+        "specificity": 0.8636363636363636,
+        "balanced_accuracy": 0.8805361305361306,
+        "confusion_matrix": [
+          [
+            76,
+            12
+          ],
+          [
+            4,
+            35
+          ]
+        ],
+        "brier": 0.11316932340228797,
+        "n": 127,
+        "positives": 39,
+        "roc_auc": 0.9245337995337995,
+        "average_precision": 0.8703653959617514,
+        "threshold": 0.5399468191914029
+      },
+      {
+        "accuracy": 0.9444444444444444,
+        "precision": 0.8780487804878049,
+        "recall": 0.9473684210526315,
+        "f1": 0.9113924050632911,
+        "specificity": 0.9431818181818182,
+        "balanced_accuracy": 0.9452751196172249,
+        "confusion_matrix": [
+          [
+            83,
+            5
+          ],
+          [
+            2,
+            36
+          ]
+        ],
+        "brier": 0.05992043644354645,
+        "n": 126,
+        "positives": 38,
+        "roc_auc": 0.9835526315789473,
+        "average_precision": 0.9732917677538699,
+        "threshold": 0.5358436137628545
+      },
+      {
+        "accuracy": 0.9365079365079365,
+        "precision": 0.8974358974358975,
+        "recall": 0.8974358974358975,
+        "f1": 0.8974358974358975,
+        "specificity": 0.9540229885057471,
+        "balanced_accuracy": 0.9257294429708223,
+        "confusion_matrix": [
+          [
+            83,
+            4
+          ],
+          [
+            4,
+            35
+          ]
+        ],
+        "brier": 0.06842659469066986,
+        "n": 126,
+        "positives": 39,
+        "roc_auc": 0.9811376363100501,
+        "average_precision": 0.9579343701476288,
+        "threshold": 0.5650737407768385
+      }
+    ],
+    "seconds": 0.73,
+    "stage": "preprocessing_ablation"
+  },
+  "rule": "mean five-fold F1; ties recall then simpler model; inner holdout threshold per fold",
+  "search_iterations_per_model_panel": 8,
+  "experiments": 109
+}

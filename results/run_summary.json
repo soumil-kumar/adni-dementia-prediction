@@ -1,0 +1,58 @@
+{
+  "versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scikit-learn": "1.6.1",
+    "xgboost": "3.0.2",
+    "catboost": "1.2.8",
+    "scipy": "1.15.3",
+    "joblib": "1.5.1"
+  },
+  "input_files": {
+    "a": {
+      "filename": "person_A_features.csv",
+      "sha256": "17763f9f99299d254467feace21d1150e60a50b1c0c467ada1596c274978e291"
+    },
+    "b": {
+      "filename": "person_B_features.csv",
+      "sha256": "2c9e0f87292493034a60d224ecb3575c6f440288602b84c2f8e36abf88baddf0"
+    },
+    "shared": {
+      "filename": "shared_subject_list.csv",
+      "sha256": "bc17a5c95ac280a22f166e36ba0197c41261505d7a8f3e4b116c4c706f396df9"
+    },
+    "adni": {
+      "filename": "ADNIMERGE.csv",
+      "sha256": "74609ea09c9ea9f3c9dff01eba1d4297031783f8dbd8281ba4fa150226f59268"
+    },
+    "dx": {
+      "filename": "DXSUM_05Sep2026.csv",
+      "sha256": "9c345835d2a84eb618f0f9d24d8bc03828963fdde08966dba3a201937a210806"
+    },
+    "neuro": {
+      "filename": "NEUROBAT_06Sep2026.csv",
+      "sha256": "2aa51adc2c02df68192109eb1e3da082bfc5647f23c3b6d02842cfc4a0955b4c"
+    },
+    "history": {
+      "filename": "MEDHIST_06Sep2026.csv",
+      "sha256": "a606ae9de41b668b5b1fb0924a94aea2b60b02bb804e86874099df9718fc84b3"
+    },
+    "old_labels": {
+      "filename": "outcome_labels.csv",
+      "sha256": "9dc2a0e6ed402b41ce2e9b88f89d462e9e32beb3edb80da90b862d469b6e586b"
+    }
+  },
+  "model_sha256": "06485f2379bd467ded35cc1a9d0df20bda6e5319ead586364f6a16d41e2edffd",
+  "master_sha256": "45763b2c97e965c4a5e4bdc290bc37d3c2ab99ff0006574d847c51cc9ca38263",
+  "split_sha256": "f7046242c33e4213a1bd3c8149974c2d984d26065f922b63a950c9dec0f9e52c",
+  "seed": 42,
+  "folds": 5,
+  "reproduction": {
+    "master_identical": true,
+    "splits_identical": true,
+    "predictions_identical_within": 1e-12,
+    "threshold_identical": true,
+    "rows_checked": 2155,
+    "note": "Recreated source preparation and selected fit; no search or threshold changes based on final validation."
+  }
+}

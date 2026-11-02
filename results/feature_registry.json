@@ -1,0 +1,542 @@
+[
+  {
+    "feature": "AGE",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTGENDER",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "category",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTEDUCAT",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "APOE4",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTRACCAT",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "category",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTETHCAT",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "category",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTMARRY",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row",
+    "type": "category",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "ABETA_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "TAU_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "PTAU_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "CDRSB_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "ADAS11_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "ADAS13_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MMSE_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "RAVLT_immediate_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "RAVLT_learning_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "RAVLT_forgetting_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "RAVLT_perc_forgetting_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "FAQ_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MOCA_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "Hippocampus_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "Ventricles_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "WholeBrain_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "Entorhinal_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "Fusiform_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MidTemp_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "ICV_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "FDG_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "AV45_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtMem_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtLang_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtVisspat_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtPlan_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtOrgan_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtDivatt_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogPtTotal_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPMem_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPLang_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPVisspat_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPPlan_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPOrgan_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPDivatt_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "EcogSPTotal_bl",
+    "source": "ADNIMERGE",
+    "temporal_rule": "original baseline row; baseline measurement",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "TRAASCOR",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "TRABSCOR",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "DSPANFOR",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "DSPANBAC",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "CATANIMSC",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "CLOCKSCOR",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "LIMMTOTAL",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "LDELTOTAL",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "BNTTOTAL",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "DIGITSCOR",
+    "source": "NEUROBAT",
+    "temporal_rule": "baseline or screening within 90 days, no later than index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH4CARD",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH9ENDO",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH16SMOK",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 1,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MHPSYCH",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH3HEAD",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH14ALCH",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  },
+  {
+    "feature": "MH2NEURL",
+    "source": "MEDHIST",
+    "temporal_rule": "aggregate all records on/before index",
+    "type": "numeric",
+    "tier": 2,
+    "units": "source-table units; no unit conversion",
+    "missing_rule": "field-specific codes; unknown history remains missing"
+  }
+]

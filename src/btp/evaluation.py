@@ -119,6 +119,14 @@ def publish_aggregates(cfg):
         dump(target/name,json.loads((local/name).read_text()))
     experiments=json.loads((local/'experiments.json').read_text())
     dump(target/'development_comparison.json',{'records':experiments['records']})
+    frozen=json.loads((local/'frozen_manifest.json').read_text())
+    preparation=json.loads((local/'prepare_manifest.json').read_text())
+    summary=dict(versions=frozen['versions'],input_files=preparation['inputs'],
+        model_sha256=frozen['model_sha256'],master_sha256=frozen['master_sha256'],
+        split_sha256=frozen['split_sha256'],seed=cfg['seed'],folds=cfg['folds'])
+    if (local/'reproduction_check.json').exists():
+        summary['reproduction']=json.loads((local/'reproduction_check.json').read_text())
+    dump(target/'run_summary.json',summary)
     import shutil
     for name in ['validation_plots.png','missingness.png']:
         shutil.copyfile(local/name,target/name)
