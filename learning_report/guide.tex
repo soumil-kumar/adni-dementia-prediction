@@ -1,0 +1,296 @@
+\begin{titlepage}\centering\vspace*{28mm}
+{\Large Bachelor's Thesis Project\par}\vspace{16mm}
+{\Huge\bfseries Understanding Our\par Dementia Prediction Model\par}\vspace{12mm}
+{\Large From prepared data to training, evaluation,\par and a patient's risk percentage\par}\vspace{18mm}
+{\large A detailed learning companion to the implemented project\par}\vfill
+\begin{minipage}{.87\textwidth}
+\textbf{The short answer}\par
+Yes: the software returns a percentage. It is the calibrated model estimate of dementia being diagnosed \emph{within the next five years from the baseline assessment}. It does not estimate onset only after five years, an exact onset date, or every condition covered by the broad term NCD.
+
+\textbf{Final model}\par
+Regularized logistic regression, preceded by training-fitted preprocessing and KNN imputation, followed by sigmoid probability calibration and a fixed decision threshold.
+
+This guide explains the actual saved implementation. It does not change the fitted model or the existing thesis documents.
+\end{minipage}\vspace{15mm}
+\end{titlepage}\setcounter{page}{2}
+
+\section*{How to use this report}
+This report explains the questions you should be able to answer in a project discussion: what the model predicts, why data were split, what preprocessing learns, how coefficients are trained, how the best candidate was selected, why calibration is needed, and how the final percentage is calculated.
+
+The worked example uses the saved predictor and the project's synthetic JSON input. Its intermediate values are measured from that artifact, not illustrative guesses. Other simple numerical examples are explicitly illustrative.
+
+\tableofcontents
+\vfill
+\textbf{Remember these distinctions}\par
+A risk percentage describes a prediction for one record; accuracy evaluates decisions over many records. The percentage exists before the binary threshold is applied. A below-threshold prediction means lower estimated risk relative to that cutoff, not zero possibility.
+\clearpage
+
+\section{What the model is actually trying to predict}
+A supervised model learns a relationship between input measurements $x$ and a known outcome $y$. Here the inputs are original-baseline demographic, cognitive, genetic, medical-history, fluid-biomarker, and tabular imaging measures. Raw images, patient identifiers, future diagnosis, and future cognitive scores are not predictors.
+
+The label is one if dementia is observed strictly after baseline and on or before the fifth calendar anniversary. It is zero if no such event is observed and a valid diagnosis observation exists at or after the anniversary. Early departure without an event is an unknown outcome, not zero. For a baseline on 1 January 2020, conversion in 2024 is inside the outcome window; conversion first observed in 2027 is outside this five-year outcome.
+
+The intended interpretation is
+\begin{equation}
+p(x)\approx P(\text{dementia observed by baseline + 5 years}\mid x,\text{eligible study population}).
+\end{equation}
+ADNI's harmonized DXSUM diagnosis 3 means dementia \cite{adni}. The implemented endpoint is therefore \emph{any incident dementia}, not separately adjudicated Alzheimer-specific disease or every condition that might be called NCD.
+
+\subsection{Why the prepared handoffs were not the entire experiment}
+Person A supplied 29 predictors and Person B 31 for the same 2,155 unique participants. These files needed validation, correction, and a defensible target before modeling. In particular, 363 originally positive participants already had baseline AD. A model trained on them would partly recognize existing disease instead of forecasting incident disease.
+
+Rebuilt labels and conservative eligibility checks left 1,056 known-outcome participants: 324 converters and 732 nonconverters. Other participants were excluded for baseline dementia, insufficient follow-up, unrecognized baseline diagnosis, or ambiguous diagnosis records. Unknown outcomes were not imputed. Missing input values are a different problem: an imputation method can estimate a measurement, but it cannot invent the future event label.
+
+The post-extraction sequence was: validate handoffs; correct temporal feature selection and unavailable history; merge one-to-one; parse laboratory bounds; rebuild labels; fix subject partitions; compare training pipelines; select and refit a candidate; calibrate; choose a threshold; freeze the artifact; evaluate once on held-out subjects; and verify reproduction.
+
+\textbf{Main lesson:} the algorithm's score is meaningful only after its outcome and eligible population have been defined correctly.
+\clearpage
+
+\section{Why we used development, calibration, and final validation}
+\begin{center}\begin{tabular}{lrrr}\toprule
+Partition & Subjects & Converters & Nonconverters\\\midrule
+Development & 633 & 194 & 439\\
+Calibration / threshold & 211 & 65 & 146\\
+Final validation & 212 & 65 & 147\\\bottomrule
+\end{tabular}\end{center}
+The fixed split is approximately 60/20/20, using seed 42 and outcome stratification. Integer rounding explains the exact counts. Stratification keeps the class proportion similar; it does not make subgroup populations identical.
+
+\textbf{Development} is where model family, panel, regularization, weighting, and preprocessing are compared. \textbf{Calibration} fits the final probability mapping and operating threshold. \textbf{Final validation} evaluates the frozen system on subjects who fitted neither of those stages. The final saved classifier is fitted on 633 development subjects, not quietly refitted on everyone after evaluation.
+
+\subsection{What leakage means in practice}
+If we calculate means or fit an imputer using all records before splitting, the later validation subjects influence the training procedure. Labels need not be involved for this to be leakage. The correct pattern is \emph{fit on training records, transform other records using the stored rules}. Calibration and validation do not update training means, categories, selected columns, or KNN reference neighbors.
+
+With one original-baseline row per RID, stratified row splitting is also subject splitting, and explicit checks establish disjoint RIDs. Repeated-visit modeling would require grouped splits. Follow-up cognitive scores are excluded because they contain progression unavailable at baseline.
+
+\subsection{Five development folds and an inner threshold holdout}
+Development subjects are divided into five fixed folds. A candidate fits on four and is evaluated on the remaining fold, repeating so every subject is held out once. Scores are averaged for selection. These are development estimates because they help choose among candidates.
+
+Within each outer training fold, 25\% of that training portion is held out to select a threshold. Fit on the remaining inner records, maximize threshold $F_1$ on the inner holdout, refit on all outer-training records, and assess the untouched outer fold. All preprocessing is fitted anew at the appropriate training stage. This protects outer-fold outcomes from threshold tuning, but it is not a fully nested hyperparameter evaluation. Selection across many specifications can make the chosen development mean optimistic; final validation supplies the independent check.
+\clearpage
+
+\section{What preprocessing learns and how KNN is used}
+The three candidate panels have 14 clinical, 28 core, and 60 expanded source fields. The selected core panel contains age, sex, education, APOE4; ten cognitive measures; three CSF measures; seven MRI measures; FDG; and three medical-history flags. Three laboratory bound indicators are derived; two are nonconstant in final fitting.
+
+Within each training fit, constant fields and fields with more than 80\% missingness are removed. Their retained list is stored and applied unchanged to later records. Missingness in a new patient does not cause the system to relearn a different feature panel.
+
+\subsection{Scaling}
+For a numeric feature $j$, training supplies mean $\mu_j$ and standard deviation $s_j$:
+\begin{equation}z_j=(x_j-\mu_j)/s_j.\end{equation}
+Illustratively, age 75 with training mean 70 and standard deviation 5 becomes 1. This means one training standard deviation above the mean, not one percent more risk. Real inference uses the actual saved statistics. Scaling prevents large numerical units, such as brain volumes, from dominating distances and coefficient penalties.
+
+\subsection{KNN imputation is not KNN classification}
+The selected preprocessing uses \code{KNNImputer(n_neighbors=5, weights='distance')}. It finds nearby fitted training records using jointly observed standardized measurements. For a missing measurement, it uses a distance-weighted average of available neighbor measurements. Informally,
+\begin{equation}\widehat z_{ij}=\frac{\sum_{r\in\mathcal N_{ij}}w_{ir}z_{rj}}{\sum_{r\in\mathcal N_{ij}}w_{ir}},\qquad w_{ir}\propto 1/d(i,r).
+\end{equation}
+The distance adjusts for the number of jointly observed coordinates. KNN estimates an input feature, not the dementia label. The classifier that follows is logistic regression. New calibration or validation records are not fitted reference neighbors for each other.
+
+Missing indicators preserve information that a numeric value was absent. Categorical fields use a distinct missing category and one-hot encoding; categories are not averaged into fractional values. Previously unseen categories are supported without refitting. The final pipeline has 60 transformed columns, including indicators and encoded terms. That does not mean it selected 60 original biomarkers.
+
+Median imputation with indicators and scaling was the simpler comparator. Bound strings such as \code{>1700} retain their boundary and a signed indicator. Valid negative RAVLT changes are preserved. Medical-history absence is not inferred from a missing record: 417 participants' unavailable history was restored to missing before modeling.
+\clearpage
+
+\section{Which algorithm won, and how the alternatives differ}
+\begin{center}\small\begin{tabular}{p{.23\linewidth}p{.67\linewidth}}\toprule
+Candidate & Mechanism\\\midrule
+Majority baseline & Always predicts the most frequent development class; provides a minimum reference.\\
+Logistic regression & Learns a weighted score from transformed features and maps it through a sigmoid.\\
+Random forest & Averages many randomized decision trees; depth and leaf-size controls limit complexity.\\
+XGBoost & Adds trees sequentially to improve a regularized prediction objective.\\
+CatBoost & Another boosted-tree comparator; in this experiment it uses the same numeric/one-hot preprocessing.\\\bottomrule
+\end{tabular}\end{center}
+
+\textbf{The final saved classifier is logistic regression}, not XGBoost or KNN classification. KNN fills missing inputs, the logistic classifier predicts the label score, and a second logistic fit calibrates probabilities. These are three distinct roles.
+
+The selected settings are \code{C=0.01}, \code{class_weight='balanced'}, core features, scaled KNN imputation, and no selected MRI/ICV normalization. Logistic regression uses L-BFGS and a maximum of 3,000 iterations. This is a convergence limit, not evidence that exactly 3,000 training steps occurred.
+
+Eight sampled hyperparameter configurations per model/panel were tested, below the cap of 30. Logistic settings varied regularization and class weighting. Forest settings varied depth, leaf size, feature subsampling, and weights. Boosting settings varied tree count/depth, learning rate, regularization, sampling, and weighting. Common folds and a recorded seed make comparisons repeatable.
+
+There are 109 recorded comparisons: seven initial baselines, 96 sampled comparisons, and six preprocessing alternatives. Some settings repeat or closely resemble others; this is not 109 fundamentally different algorithms. The three strongest development candidates also tested KNN and MRI normalization alternatives.
+
+The winner was selected by mean fold $F_1$, then recall, then simplicity. Its mean development $F_1$ was 0.8721, precision 0.8411, recall 0.9074, and accuracy 0.9179. Fold SD of $F_1$ was 0.0442. Matching core logistic regression with median imputation had $F_1\approx0.8671$. The KNN gain was modest, not a universal claim of superiority.
+
+Nonlinear complexity is not automatically an advantage. Moderately sized data and correlated clinical summary scores can favor a regularized linear decision rule. The actual result, rather than an assumption about an algorithm's reputation, determined the saved model.
+\clearpage
+
+\section{How logistic regression learns from the labels}
+After preprocessing, a participant has vector $z=(z_1,\ldots,z_d)$. Training learns an intercept and coefficients:
+\begin{equation}s=\beta_0+\sum_j\beta_j z_j,\qquad q=\sigma(s)=\frac{1}{1+e^{-s}}.
+\end{equation}
+The score $s$ can be any real number. The sigmoid converts it into a raw probability between zero and one. Its inverse is the log odds: $\log(q/(1-q))=s$. Illustratively, $s=0$ gives 0.5, $s=1$ gives about 0.731, and $s=-1$ gives about 0.269.
+
+A positive coefficient raises raw log odds as that transformed feature increases, conditional on other inputs; a negative one lowers them. It is not an additive percentage-point effect. Correlated fields can share or redistribute coefficient magnitude, so a coefficient is not a causal biological effect.
+
+\subsection{Loss, weighting, and regularization}
+For known outcome $y_i$, logistic log loss is
+\begin{equation}\ell_i=-[y_i\log(q_i)+(1-y_i)\log(1-q_i)].\end{equation}
+For a converter, probability 0.9 gives loss about 0.105; probability 0.1 gives about 2.303. A confidently wrong prediction is heavily penalized. Training seeks coefficients that make the known outcomes more probable overall \cite{logistic}.
+
+The fitted objective combines class weights with an $L_2$ coefficient penalty, conceptually
+\begin{equation}\mathcal L=\sum_iw_{y_i}\ell_i+\frac{\lambda}{2}\|\beta\|_2^2,
+\end{equation}
+where exact normalization follows the implementation and stronger penalty corresponds to smaller $C$. Thus $C=0.01$ shrinks weights more strongly than $C=1$, reducing dependence on extreme weights in a correlated, moderately sized dataset. It does not mathematically guarantee no overfitting.
+
+Balanced weights are computed within the fitted training sample as $w_c=N/(2N_c)$. For all development subjects, $w_1=633/(2\cdot194)\approx1.631$ and $w_0=633/(2\cdot439)\approx0.721$. Converter errors receive greater weight. Final-validation class counts play no part in this calculation.
+
+The unregularized gradient contains $(q_i-y_i)z_i$, explaining how a wrongly low probability for a converter pushes the score upward. L-BFGS uses gradients and approximate curvature to optimize the penalized objective. Coefficients are learned numerically, not manually assigned according to a clinician's scoring chart. This is also why the raw weighted probability should be checked for calibration rather than assumed to equal population risk.
+\clearpage
+
+\section{Calibration and thresholding: two different operations}
+\subsection{Why a raw probability needs checking}
+A classifier can rank converters above nonconverters but systematically overestimate or underestimate their event frequencies. Class-weighted fitting can alter this scale. Calibration learns a mapping between the selected classifier's raw scores and observed outcomes on a separate reserved group \cite{calibration}. It does not use final-validation outcomes.
+
+The raw probability $q$ is clipped to $[10^{-6},1-10^{-6}]$ to avoid infinite log odds, then converted to
+\begin{equation}u=\log\left(\frac{q}{1-q}\right).
+\end{equation}
+A second logistic regression, fitted on 211 calibration subjects with $C=10^6$, estimates
+\begin{equation}p=\sigma(au+b),\quad a=1.4433261622,\quad b=-0.7855483923.
+\end{equation}
+These parameters come from the saved artifact. A positive slope preserves ranking while changing the probability scale. A negative fitted slope triggers an error in this implementation. The final percentage is simply
+\begin{equation}\boxed{\text{risk percentage}=100p.}\end{equation}
+Multiplying by 100 only changes units; training and calibration produce the substantive estimate. For the logistic classifier, raw log odds equal its score before clipping, so the final computation is equivalently $p=\sigma(a(\beta_0+\beta^\top z)+b)$ away from clipping extremes.
+
+\subsection{Why a percentage is not the binary decision}
+The threshold rule is $\widehat y=1$ if $p\geq\tau$. Precision is $TP/(TP+FP)$, recall is $TP/(TP+FN)$, and
+\begin{equation}F_1=\frac{2TP}{2TP+FP+FN}.
+\end{equation}
+The final threshold maximizes $F_1$ on calibrated calibration-set predictions, resolving ties by recall. Its value is $\tau=0.5130783821$, or 51.3078\%. Calibration and threshold use the same reserved partition; its fitted statistics are not independent evaluation evidence.
+
+A 40\% estimate remains 40\% even though it falls below that threshold. Lowering the threshold can increase detected cases and false alarms without changing anyone's probability. A threshold of 0.5 was not assumed automatically. Final-validation decisions happened to match at 0.5 and at the selected threshold; that observation did not cause a revision after evaluation.
+\clearpage
+
+\section{Worked example: exactly how 36.56\% is calculated}
+This is the existing synthetic example, not an identifiable ADNI participant. Unspecified optional measurements are missing and use the saved preprocessing.
+\begin{verbatim}
+{
+  "baseline_diagnosis": "LMCI",
+  "AGE": 72, "PTGENDER": "Female", "PTEDUCAT": 16,
+  "APOE4": 1, "MMSE_bl": 27, "CDRSB_bl": 1.5,
+  "ADAS13_bl": 16, "FAQ_bl": 2,
+  "ABETA_bl": null, "TAU_bl": null, "PTAU_bl": null
+}
+\end{verbatim}
+Baseline diagnosis declares eligibility and is excluded from classifier inputs. The stored panel, scaling, KNN, indicators, and encoding produce a 60-dimensional model vector. The saved classifier then gives these verified values:
+\begin{align}
+s&=0.1624432956,\\
+q&=\sigma(s)=0.5405217563,\\
+u&=\log(q/(1-q))=0.1624432956,\\
+v&=1.4433261622\,u-0.7855483923\approx-0.5510897338,\\
+p&=\sigma(v)=0.3656116194,\\
+100p&=36.56116194\%.
+\end{align}
+The raw classifier therefore corresponds to 54.05\%, whereas the complete calibrated predictor returns \textbf{36.56\%}. Calibration's intercept and slope explain why a raw probability slightly above 0.5 can become lower. Using the raw pipeline alone would give a different, uncalibrated interface.
+
+Since $0.36561<0.51308$, the binary flag is false. The command returns approximately
+\begin{verbatim}
+{
+  "risk_probability": 0.3656116194,
+  "risk_percent": 36.56116194,
+  "threshold": 0.5130783821,
+  "predicted_positive": false,
+  "model_version": "0.1.0"
+}
+\end{verbatim}
+Correct reading: ``estimated 36.56\% risk of the defined dementia-conversion outcome within five years under this model, below its current operating threshold.'' It is not no possibility, a confirmed diagnosis, or an exact prediction of what happens to an individual. Decimal precision is presentation rather than evidence of equally precise individual certainty.
+\clearpage
+
+\section{How the trained model was evaluated}
+The complete predictor was frozen before assessing 212 untouched subjects. Hash checks and a validation-opening marker protect the saved run against accidental retraining after evaluation.
+
+\begin{center}\begin{tabular}{lrr}\toprule
+Actual outcome & Predicted nonconverter & Predicted converter\\\midrule
+Nonconverter & 136 & 11\\
+Converter & 11 & 54\\\bottomrule
+\end{tabular}\end{center}
+\begin{align}
+\mathrm{accuracy}&=(136+54)/212=89.62\%,\\
+\mathrm{precision}&=54/(54+11)=83.08\%,\\
+\mathrm{recall}&=54/(54+11)=83.08\%,\\
+F_1&=108/(108+11+11)=83.08\%,\\
+\mathrm{specificity}&=136/(136+11)=92.52\%.
+\end{align}
+The model misses 11 converters and flags 11 nonconverters. Equal false-positive and false-negative counts explain why precision, recall, and $F_1$ match. The majority-only baseline gets 69.34\% accuracy with zero recall, showing why accuracy alone is not enough.
+
+\subsection{Ranking, probabilities, and uncertainty}
+ROC AUC is 0.9667 and measures ranking over thresholds. Average precision is 0.9250, summarizing the precision--recall staircase. Neither metric is the chance assigned to a particular patient. Average precision is not the same estimator as trapezoidal PR AUC.
+
+Brier score, $N^{-1}\sum_i(p_i-y_i)^2$, checks probability error; lower is better. Its final value is 0.06691. Supplemental frozen-score diagnostics compare raw Brier 0.07714 with calibrated Brier 0.06691. Ten-equal-width-bin ECE changes from 0.09183 to 0.02940. These describe probability alignment in this sample and were not used to refit anything.
+
+There were 2,000 stratified subject-bootstrap samples, keeping model, threshold, and class counts fixed. Accuracy's 95\% interval is 85.38--93.87\%; recall's is 73.85--90.77\%. These intervals quantify uncertainty in aggregate evaluation metrics under that design. They are not confidence intervals around the synthetic patient's 36.56\% probability. The current interface does not produce patient-specific uncertainty intervals.
+
+Finally, final-validation $F_1$ (0.8308) is below the selected development mean (0.8721). That is why the search maximum was not presented as the final performance result.
+\clearpage
+
+\section{What a patient's percentage does and does not mean}
+The program returns a percentage for every accepted record, including those below threshold. Ideally, among many comparable records assigned probabilities near 0.36, roughly 36\% would experience the defined outcome under the same population and observation process. Calibration tries to improve this agreement; an individual still experiences an outcome rather than a fractional diagnosis.
+
+\textbf{Within five years is different from after five years.} The output concerns the baseline-to-fifth-anniversary window. It is not a full survival curve, annual conditional probability, exact onset date, or prediction solely for years beyond five. Supplying a follow-up assessment does not automatically turn an original-baseline model into a validated rolling forecast.
+
+\textbf{The target is any dementia, not all NCDs or specifically AD.} The title and motivation use broader language, but probability meaning is determined by the actual label definition. The implemented DXSUM outcome must guide interpretation.
+
+\textbf{Accuracy is not individual risk.} An accuracy of 89.62\% means 190 of 212 held-out decisions were correct at the frozen threshold. It does not imply every patient has 89.62\% risk or that each displayed percentage is correct to 89.62\%.
+
+\textbf{Missing inputs can be processed but may weaken applicability.} Imputation is not equivalent to observing the missing biomarker. The interface's minimum of three measured source fields is an input check, not validation of every possible sparse-input pattern. The synthetic example demonstrates software execution, not a clinically validated sparse-feature assessment.
+
+\subsection{Why this remains a research estimate}
+Only subjects with defensible known outcomes entered binary training. Short-follow-up exclusions can select for health, attendance, and study phase. ADNI recruitment, biomarker availability, and diagnosis scheduling may differ from routine clinical care. Independent acquisition dates are not available for every merged baseline field.
+
+All 65 final-validation converters were in the MCI subgroup. The CN/SMC subgroup contained 87 subjects and no converter, so its sensitivity cannot be established. Pooled high AUC does not prove equally good prediction in initially cognitively normal people.
+
+A responsible reading is ``estimated five-year dementia risk: 36.56\%, below the current model threshold,'' together with the research context. ``No possibility'' is incorrect. External or temporal validation, subgroup analysis, missingness-shift testing, and clinically defined operating criteria are needed before offering the percentage as a clinical service.
+\clearpage
+
+\section{Finding the operations in the code and running prediction}
+\begin{center}\small\begin{tabular}{p{.31\linewidth}p{.60\linewidth}}\toprule
+Module / object & Responsibility\\\midrule
+\code{prepare.py, cohort.py} & Validated merge, corrected features, eligibility and labels.\\
+\code{splits.py} & Fixed disjoint partitions and integrity checks.\\
+\code{preprocessing.py} & Panel filtering, scaling, imputation, categories and indicators.\\
+\code{training.py} & Estimator construction, folds and inner threshold holdouts.\\
+\code{search.py} & Comparisons, selection, final refit, calibration and freezing.\\
+\code{artifact.Predictor} & Raw pipeline probability followed by calibration.\\
+\code{metrics.py} & Evaluation scores and maximum-$F_1$ threshold.\\
+\code{evaluation.py} & Frozen validation, intervals and aggregate outputs.\\
+\code{__main__.py} & Commands and JSON percentage formatting.\\\bottomrule
+\end{tabular}\end{center}
+
+\subsection{The important probability-call distinction}
+For the object loaded from \code{local/model.joblib}, these calls mean different things:
+\begin{verbatim}
+predictor.pipeline.predict_proba(frame)[:, 1]  # raw q
+predictor.predict_proba(frame)                # calibrated p
+risk_percent = 100 * p
+predicted_positive = p >= predictor.threshold
+\end{verbatim}
+The CLI uses the calibrated second call. The first alone bypasses calibration. Likewise, fitting a fresh scaler or imputer for each patient would be wrong: inference must apply the stored training transformations. Only trusted locally generated joblib artifacts should be loaded.
+
+Run the synthetic example from the repository directory:
+\begin{verbatim}
+uv run --locked python -m btp predict --input examples/baseline.json
+\end{verbatim}
+No retraining is required. Input accepts a baseline object or list of objects; a non-demented diagnosis is required as an eligibility declaration. Unknown fields, nonfinite numeric values, selected impossible ranges, and invalid APOE4 counts are rejected. Original field names and source units must be preserved. Probability, percentage, threshold, binary flag, and version are returned. There is no clinical web interface in this project.
+\clearpage
+
+\section{Reproducibility and answers to project-discussion questions}
+Thirteen synthetic tests cover label boundaries, baseline exclusions, duplicate/conflicting visits, dated features, medical-history aggregation, laboratory bounds, handoff contracts, preprocessing isolation, serialization, and a complete end-to-end workflow. GitHub CI passed. Synthetic fixtures avoid redistributing ADNI subject records.
+
+Fresh-process reproduction rebuilds the data and selected fit in separate local storage. It recovers identical matrix and split hashes, the same threshold, and probabilities agreeing within $10^{-12}$ across 2,155 baseline records. This is computational reproducibility, not performance validation on a new population. Patient records, split IDs, individual predictions, and model binaries remain local; software, synthetic examples, and aggregates are public.
+
+\textbf{Which algorithm is the final classifier?} Regularized logistic regression with balanced weights. KNN imputes inputs; a separate logistic sigmoid mapping calibrates the resulting score.
+
+\textbf{What is learned versus selected?} Coefficients, means/scales, category vocabulary, retained columns, neighbor reference data, calibration parameters, and threshold are learned from the relevant training partitions. Panel candidates, seed, search budget, and selection criterion are configured. Hyperparameter comparison selects among fitted candidates.
+
+\textbf{Does 89.62\% accuracy become a patient's percentage?} No. The percentage is $100\sigma(a\,\mathrm{logit}(q(x))+b)$, evaluated for that input. Accuracy summarizes decisions over the held-out cohort.
+
+\textbf{Does a false binary flag mean no chance?} No. The synthetic flag is false while its risk estimate remains 36.56\%. Classification is a threshold policy, not a declaration of impossibility.
+
+\textbf{Why not refit on all 1,056 participants after reporting metrics?} That would create a different artifact, potentially requiring new calibration and independent evaluation. The saved evaluated classifier uses development subjects only, with its calibrator trained separately.
+
+\subsection*{Evidence and further reading}
+This guide was checked against the saved predictor, preprocessing, search/training code, probability wrapper, CLI, and frozen results. Only the synthetic example was scored for the numerical walkthrough; no fitted model or threshold changed.
+
+Repository: \url{https://github.com/soumil-kumar/adni-dementia-prediction}.
+\begin{thebibliography}{3}
+\bibitem{logistic} scikit-learn 1.6.1. \emph{Linear models: logistic regression}. \url{https://scikit-learn.org/1.6/modules/linear_model.html}.
+\bibitem{calibration} scikit-learn. \emph{Probability calibration}. \url{https://scikit-learn.org/stable/modules/calibration.html}.
+\bibitem{adni} ADNI. \emph{Diagnostic information and harmonized DXSUM coding}. \url{https://adni.loni.usc.edu/quick-start-guide-asset101625/diagnostic.html}.
+\end{thebibliography}

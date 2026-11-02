@@ -27,3 +27,8 @@ thesis/*.out
 thesis/*.toc
 thesis/contact_*.png
 thesis/page*.png
+learning_report/*.aux
+learning_report/*.log
+learning_report/*.out
+learning_report/*.toc
+learning_report/contact_*.png
