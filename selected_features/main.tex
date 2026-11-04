@@ -1,22 +1,18 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[margin=22mm]{geometry}
 \usepackage[T1]{fontenc}\usepackage{lmodern}
-\usepackage{booktabs,array,fancyhdr}
+\usepackage{booktabs,array}
 \usepackage[hidelinks]{hyperref}
-\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small BTP selected model features}\fancyfoot[C]{\thepage}
-\setlength{\headheight}{14pt}\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\setlength{\emergencystretch}{3em}
+\pagestyle{plain}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\setlength{\emergencystretch}{3em}
 \newcommand{\field}[1]{{\small\texttt{\detokenize{#1}}}}
 \begin{document}
 {\LARGE\bfseries Features used in the final BTP prediction model\par}
 \vspace{4mm}
-We extracted \textbf{60 baseline source features} for analysis. After comparing feature panels and models, the selected logistic regression model uses the following \textbf{28 core source features} to predict dementia conversion within five years.
+We extracted \textbf{60 baseline source features} for analysis. After comparing feature panels and models, the selected logistic regression model uses \textbf{28 core source features} to predict dementia conversion within five years.
 
-BTP stands for Bachelor's Thesis Project. The suffix \field{_bl} identifies a baseline measurement. MRI and PET entries are numeric measurements derived from imaging; raw scans are not model inputs.
-\subsection*{Demographics and genetics 4 features}
-\begingroup\small\renewcommand{\arraystretch}{1.22}\noindent\begin{tabular}{@{}p{.39\linewidth}p{.58\linewidth}@{}}\toprule\textbf{Feature column} & \textbf{Meaning}\\\midrule
-\field{AGE} & Age at the baseline assessment.\\
-\field{PTGENDER} & Recorded participant sex or gender category.\\
-\field{PTEDUCAT} & Years of formal education.\\
+\subsection*{Genetics 1 feature}
+\begingroup\small\renewcommand{\arraystretch}{1.22}\noindent\begin{tabular}{@{}p{.39\linewidth}p{.58\linewidth}@{}}\toprule
 \field{APOE4} & Number of APOE epsilon 4 alleles, recorded as 0, 1, or 2.\\
 \bottomrule\end{tabular}\endgroup
 \subsection*{Cognitive assessments 10 features}
@@ -59,12 +55,7 @@ BTP stands for Bachelor's Thesis Project. The suffix \field{_bl} identifies a ba
 \field{MH9ENDO} & Endocrine or metabolic history flag.\\
 \field{MH16SMOK} & Smoking history flag.\\
 \bottomrule\end{tabular}\endgroup
-\subsection*{Feature count and interpretation}
+\subsection*{Feature count}
 The 28 features comprise 4 demographic or genetic fields, 10 cognitive scores, 3 CSF biomarkers, 7 MRI measurements, 1 PET measurement, and 3 history indicators.
 
-Medical history is aggregated from records at or before baseline. A documented condition is coded 1, documented absence is coded 0, and unavailable history remains missing for preprocessing.
-
-These are source-feature counts, not counts of learned regression coefficients. The saved pipeline also retains two laboratory bound indicators. Missingness indicators and category encoding expand the final model input to 60 transformed columns, which is distinct from the 60 source features originally extracted.
-
-\textbf{Verification source:} the implemented feature registry and frozen model manifest. Participant identifiers, diagnosis labels, and follow-up dates are excluded from model predictors.
 \end{document}
