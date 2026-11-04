@@ -32,3 +32,8 @@ learning_report/*.log
 learning_report/*.out
 learning_report/*.toc
 learning_report/contact_*.png
+selected_features/*.aux
+selected_features/*.log
+selected_features/*.out
+selected_features/*.toc
+selected_features/page-*.png
