@@ -132,6 +132,52 @@ IIT Kharagpur\par\vspace{8mm}
 '''
 
 
+def signature_page(title, body, signatory, details):
+    return (r'''\thispagestyle{plain}
+\phantomsection\addcontentsline{toc}{section}{'''+tex(title)+r'''}
+\vspace*{18mm}
+\begin{center}{\Large\bfseries '''+tex(title)+r'''}\end{center}
+\vspace{8mm}
+'''+tex(body)+r'''
+
+\vspace{24mm}
+\noindent\begin{minipage}[t]{.28\linewidth}
+\vspace{0pt}
+Kharagpur\par 2026
+\end{minipage}\hfill
+\begin{minipage}[t]{.64\linewidth}
+\vspace{0pt}\raggedleft
+\rule{58mm}{.4pt}\par
+{\small '''+tex(signatory)+r'''}\par\smallskip
+'''+r'\par '.join(tex(line) for line in details)+r'''
+\end{minipage}
+\clearpage
+''')
+
+
+def declarations(name, roll):
+    project = '“Predictive Modeling of Neurocognitive Disease Progression”'
+    degree = 'Bachelor of Technology in Biotechnology and Biochemical Engineering'
+    supervisor = 'Prof. Manjunatha Mahadevappa'
+    affiliation = 'Department of Medical Science and Technology'
+    institute = 'Indian Institute of Technology Kharagpur'
+    candidate = (
+        f'I hereby declare that this B.Tech. Project-I report titled {project} is a record of original '
+        f'work carried out by me as part of a joint project under the guidance of {supervisor}, '
+        f'{affiliation}, {institute}, during the period from August 2026 to November 2026, '
+        f'in partial fulfilment of the requirements for the award of the degree of {degree}.'
+    )
+    certificate = (
+        f'This is to certify that the B.Tech. Project-I report titled {project}, submitted by '
+        f'{name} ({roll}) to the Department of Bioscience and Biotechnology in partial fulfilment '
+        f'of the requirements for the award of the degree of {degree}, is an authentic record of '
+        'the B.Tech. Project-I work carried out by the candidate under my supervision and guidance. '
+        'The report has fulfilled all the requirements as per the regulations of the Institute.'
+    )
+    return (signature_page('Candidate’s Declaration', candidate, 'Candidate signature', [name, f'Roll No.: {roll}'])
+            + signature_page('Supervisor’s Certificate', certificate, 'Supervisor signature', [supervisor, affiliation, institute]))
+
+
 def common_data(blocks):
     return source_range(blocks,45,49)+heading('Objectives')+r'\begin{itemize}'+'\n'+''.join(r'\item '+p(plain(blocks[i])) for i in range(58,62))+r'\end{itemize}'+'\n'+source_range(blocks,63,77,{
         64:'Pathak et al. (2026) study Alzheimer’s disease classification from resting-state fMRI [1]. Their work illustrates a separate ADNI use case: learning from functional connectivity to identify current disease status. This project instead forecasts observed dementia conversion from baseline tabular measurements.',
@@ -218,7 +264,7 @@ def bibliography(is_a):
 
 def make(blocks,records,is_a):
     name,roll=('Soumil Kumar','23BT10034') if is_a else ('Ritam Kundu','23BT10031')
-    output=PREAMBLE+title(name,roll)+r'\section*{Abstract}\addcontentsline{toc}{section}{Abstract}'+'\n'
+    output=PREAMBLE+title(name,roll)+declarations(name,roll)+r'\section*{Abstract}\addcontentsline{toc}{section}{Abstract}'+'\n'
     output+=source_range(blocks,38,40,{39:plain(blocks[39]).replace('Raw MRI and PET images are used here, although numerical measurements derived from imaging are included as tabular features.','Imaging is represented by numeric measurements derived from scans. Raw MRI and PET files are not model inputs.')})
     output+=p('The labeled cohort was divided into development (633 participants), calibration (211) and final validation (212) sets. '+('This report documents the ADNIMERGE handoff and the logistic regression and XGBoost comparisons. The selected core-panel logistic model with scaled KNN imputation was retained for final calibration and validation.' if is_a else 'This report documents the ECog, NEUROBAT and MEDHIST handoff and the CatBoost and Random Forest comparisons. The strongest of these tree candidates was core-panel CatBoost, with mean development F1 of 0.8505. The tree comparisons were development experiments.')+' The shared frozen project predictor achieved 89.62% accuracy, 83.08% precision, 83.08% recall, 92.52% specificity, F1 of 0.8308 and ROC AUC of 0.9667 on final validation.')
     output+=p(plain(blocks[42]))+r'\clearpage\tableofcontents\clearpage'+'\n'
