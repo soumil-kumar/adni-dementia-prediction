@@ -37,3 +37,11 @@ selected_features/*.log
 selected_features/*.out
 selected_features/*.toc
 selected_features/page-*.png
+individual_reports/*/*.aux
+individual_reports/*/*.log
+individual_reports/*/*.out
+individual_reports/*/*.toc
+individual_reports/*_contact_*.png
+individual_reports/*_results_page.png
+individual_reports/reference_assets/
+individual_reports/*_qa_*.png
