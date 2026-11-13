@@ -246,7 +246,7 @@ def comparisons(records,keys):
 
 
 def bibliography(is_a):
-    out=r'''\begin{thebibliography}{9}\addcontentsline{toc}{section}{References}
+    out=(r'\begin{thebibliography}{9}' if is_a else r'\begin{thebibliography}{99}')+r'''\addcontentsline{toc}{section}{References}
 \bibitem{pathak} H. Pathak, G. Reddy N, M. Acharya, and M. Mahadevappa, \emph{An Attention-Based Framework for Alzheimer's Disease Classification Using Resting-State fMRI}, 2026. \url{https://arxiv.org/abs/2607.26746}.
 \bibitem{collection} Alzheimer's Disease Neuroimaging Initiative, \emph{Data Collection}. \url{https://adni.loni.usc.edu/quick-start-guide-asset/datacollection.html}.
 \bibitem{docs} Alzheimer's Disease Neuroimaging Initiative, \emph{ADNI Documentation}. \url{https://adni.loni.usc.edu/help-faqs/adni-documentation/}.
@@ -255,6 +255,11 @@ def bibliography(is_a):
 '''
     else:out+=r'''\bibitem{forest} L. Breiman, \emph{Random Forests}, Machine Learning 45, pp. 5--32, 2001. \url{https://doi.org/10.1023/A:1010933404324}.
 \bibitem{cat} L. Prokhorenkova et al., \emph{CatBoost: unbiased boosting with categorical features}, NeurIPS, 2018. \url{https://arxiv.org/abs/1706.09516}.
+\bibitem{jackmri} C. R. Jack Jr. et al., \emph{Brain beta-amyloid measures and magnetic resonance imaging atrophy both predict time-to-progression from mild cognitive impairment to Alzheimer's disease}, Brain 133, pp. 3336--3348, 2010. \url{https://doi.org/10.1093/brain/awq277}.
+\bibitem{fariasecog} S. T. Farias et al., \emph{The Measurement of Everyday Cognition (ECog): Scale Development and Psychometric Properties}, Neuropsychology 22, pp. 531--544, 2008. \url{https://doi.org/10.1037/0894-4105.22.4.531}.
+\bibitem{adniclinical} Alzheimer's Disease Neuroimaging Initiative, \emph{Clinical Documentation: Logical Memory}. \url{https://adni.loni.usc.edu/quick-start-guide-asset/clinical.html}.
+\bibitem{rubinmissing} D. B. Rubin, \emph{Inference and Missing Data}, Biometrika 63, pp. 581--592, 1976. \url{https://doi.org/10.1093/biomet/63.3.581}.
+\bibitem{vancalster} B. Van Calster et al., \emph{Calibration: the Achilles heel of predictive analytics}, BMC Medicine 17, 230, 2019. \url{https://doi.org/10.1186/s12916-019-1466-7}.
 '''
     return out+r'''\bibitem{project} BTP project repository and frozen aggregate experiment records. \url{https://github.com/soumil-kumar/adni-dementia-prediction}.
 \end{thebibliography}
@@ -269,13 +274,15 @@ def make(blocks,records,is_a):
     output+=p('The labeled cohort was divided into development (633 participants), calibration (211) and final validation (212) sets. '+('This report documents the ADNIMERGE handoff and the logistic regression and XGBoost comparisons. The selected core-panel logistic model with scaled KNN imputation was retained for final calibration and validation.' if is_a else 'This report documents the ECog, NEUROBAT and MEDHIST handoff and the CatBoost and Random Forest comparisons. The strongest of these tree candidates was core-panel CatBoost, with mean development F1 of 0.8505. The tree comparisons were development experiments.')+' The shared frozen project predictor achieved 89.62% accuracy, 83.08% precision, 83.08% recall, 92.52% specificity, F1 of 0.8308 and ROC AUC of 0.9667 on final validation.')
     output+=p(plain(blocks[42]))+r'\clearpage\tableofcontents\clearpage'+'\n'
     output+=common_data(blocks)
-    if is_a:
-        output+=r'\input{exploratory_plots}'+'\n'
+    output+=r'\input{exploratory_plots}'+'\n'
     output+=r'\clearpage'+'\n'+heading('Methodology and Model')+heading('Overall workflow',2)+figure('workflow.png','Overview of the baseline tabular prediction workflow.', '.98')
     output+=source_range(blocks,109,116,{114:plain(blocks[114]).replace('an undated dementia records','undated dementia records')})
     output+=source_range(blocks,118,119)+(HANDOFF_A if is_a else HANDOFF_B)+SHARED_TRANSFORMS
     output+=source_range(blocks,122,123)+p('Within development, five-fold stratified cross-validation was applied to each model and feature panel. For each outer fold, one quarter of its training records was used as an inner threshold holdout. A candidate was fitted on the remaining inner records, its threshold was selected by F1 on that holdout, and it was refitted on all outer training records before scoring the untouched outer fold. Hyperparameter search sampled eight configurations per model and panel. Candidates were ranked by mean fold F1, then recall and simplicity. All learned preprocessing was fitted within the corresponding training partition.')
-    output+=(MODEL_A if is_a else MODEL_B)+CALIBRATION
+    output+=MODEL_A if is_a else MODEL_B+r'\clearpage'+'\n'
+    output+=CALIBRATION
+    if not is_a:
+        output+=r'\input{calibration_figure}'+'\n'
     output+=r'\clearpage'+'\n'+heading('Results')+heading('Final validation of the shared predictor',2)+p(plain(blocks[132]))
     output+=p('This section presents the result of the frozen project predictor. It does not assign those metrics to every candidate in the development comparisons.')
     output+=source_range(blocks,133,134)+figure('validation.png','Held-out performance of the shared frozen project predictor: ROC, precision--recall, calibration and risk distributions.', '.73')+source_range(blocks,138,144)
