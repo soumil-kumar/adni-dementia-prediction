@@ -288,7 +288,9 @@ def make(blocks,records,is_a):
     output+=source_range(blocks,164,166,{166:('The selected core logistic regression model achieved 89.62% accuracy, 83.08% precision and recall, and ROC AUC of 0.9667 on the 212-person final validation set. XGBoost was compared on development folds; its strongest recorded configuration had mean F1 of 0.8486. Further validation is needed before clinical use.' if is_a else 'The strongest tree candidate was CatBoost on the core panel, with mean development F1 of 0.8505 versus 0.8397 for the strongest Random Forest. These scores are separate from the shared frozen predictor’s held-out accuracy of 89.62%, precision and recall of 83.08%, and ROC AUC of 0.9667. Further validation is needed before clinical use.')})
     output+=source_range(blocks,168,181,{175:('Interpretability is limited to conditional model coefficients. They do not establish causal effects; individual-level explanation plots were not produced.' if is_a else 'Tree-model evidence is limited to the recorded development comparisons. Independent tree-model calibration and individual-level feature-attribution plots were not produced.'),180:'Study explanation stability across folds and cohorts with carefully designed feature-attribution methods. Explanations should not be interpreted as causal evidence.'})
     output+=p('The experiment records and implementation are available in the project repository [4]. The archived split and fitted artifact support reproduction; patient data, individual predictions and model binaries remain local. The supplemental comparisons in these reports were recovered from saved development records without retraining or retuning the frozen predictor.').replace('[4]',r'\cite{project}')
-    return output+r'\clearpage'+'\n'+bibliography(is_a)
+    if not is_a:
+        output+=r'\clearpage'+'\n'
+    return output+bibliography(is_a)
 
 
 def main():
