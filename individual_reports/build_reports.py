@@ -269,6 +269,8 @@ def make(blocks,records,is_a):
     output+=p('The labeled cohort was divided into development (633 participants), calibration (211) and final validation (212) sets. '+('This report documents the ADNIMERGE handoff and the logistic regression and XGBoost comparisons. The selected core-panel logistic model with scaled KNN imputation was retained for final calibration and validation.' if is_a else 'This report documents the ECog, NEUROBAT and MEDHIST handoff and the CatBoost and Random Forest comparisons. The strongest of these tree candidates was core-panel CatBoost, with mean development F1 of 0.8505. The tree comparisons were development experiments.')+' The shared frozen project predictor achieved 89.62% accuracy, 83.08% precision, 83.08% recall, 92.52% specificity, F1 of 0.8308 and ROC AUC of 0.9667 on final validation.')
     output+=p(plain(blocks[42]))+r'\clearpage\tableofcontents\clearpage'+'\n'
     output+=common_data(blocks)
+    if is_a:
+        output+=r'\input{exploratory_plots}'+'\n'
     output+=r'\clearpage'+'\n'+heading('Methodology and Model')+heading('Overall workflow',2)+figure('workflow.png','Overview of the baseline tabular prediction workflow.', '.98')
     output+=source_range(blocks,109,116,{114:plain(blocks[114]).replace('an undated dementia records','undated dementia records')})
     output+=source_range(blocks,118,119)+(HANDOFF_A if is_a else HANDOFF_B)+SHARED_TRANSFORMS
